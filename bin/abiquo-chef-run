@@ -36,16 +36,22 @@ def parse_leases_file(file='/var/lib/dhcp/dhclient.leases')
 end
 
 def log(msg, level = :info)
-  puts "#{level.to_s.upcase}: " + msg
+  puts "#{level.to_s.upcase}: " + msg.to_s
 end
 
 LEASES_FILE = '/var/lib/dhcp/dhclient.leases'
 VAR_DIR = '/var/lib/abiquo-chef-agent'
 CHEF_CONFIG_DIR = '/etc/chef'
 BOOTSTRAP_XML = '/etc/chef/abiquo_bootstrap.xml'
+CLIENT_CERT = '/etc/chef/client.pem'
 
 if File.exist? BOOTSTRAP_XML
-  log "Bootstrap XML found. Aborting.", :warning
+  log "#{BOOTSTRAP_XML} bootstrap XML found. Aborting.", :warning
+  exit 1
+end
+
+if File.exist? CLIENT_CERT
+  log "#{CLIENT_CERT} file found. Aborting.", :warning
   exit 1
 end
 
@@ -82,8 +88,8 @@ else
   rescue Exception => e
     log "Error requesting node info from API", :error
     log e.message, :error
-    log e.backtrace, :error
-    exit
+    log e.backtrace.join("\n    "), :error
+    exit 1
   end
   #
   # HACK, FIXME 
