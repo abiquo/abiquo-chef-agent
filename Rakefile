@@ -1,48 +1,31 @@
 require 'rubygems'
-require 'bundler'
-begin
-  Bundler.setup(:default, :development)
-rescue Bundler::BundlerError => e
-  $stderr.puts e.message
-  $stderr.puts "Run `bundle install` to install missing gems"
-  exit e.status_code
-end
 require 'rake'
 
 require 'jeweler'
 Jeweler::Tasks.new do |gem|
   # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
+  gem.version = File.exist?('VERSION') ? File.read('VERSION') : ""
+
   gem.name = "abiquo-chef-agent"
-  gem.homepage = "http://github.com/rubiojr/abiquo-chef-agent"
+  gem.homepage = "http://github.com/abiquo/abiquo-chef-agent"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
-  gem.email = "sergio@rubio.name"
+  gem.summary = %Q{Abiquo Chef Agent}
+  gem.description = %Q{Abiquo Chef Agent}
+  gem.email = "srubio@abiquo.com"
   gem.authors = ["Sergio Rubio"]
-  # Include your dependencies below. Runtime dependencies are required when using your gem,
-  # and development dependencies are only needed for development (ie running rake tasks, tests, etc)
-  #  gem.add_runtime_dependency 'jabber4r', '> 0.1'
+  gem.add_runtime_dependency 'run-as-root'
+  gem.add_runtime_dependency 'chef'
+  gem.add_runtime_dependency 'daemons'
+  gem.add_runtime_dependency 'rest-client'
+  gem.add_runtime_dependency 'xml-simple'
+  gem.files.exclude 'rubygem-abiquo-chef-agent.spec'
   #  gem.add_development_dependency 'rspec', '> 1.2.3'
 end
 Jeweler::RubygemsDotOrgTasks.new
 
-require 'rake/testtask'
-Rake::TestTask.new(:test) do |test|
-  test.libs << 'lib' << 'test'
-  test.pattern = 'test/**/test_*.rb'
-  test.verbose = true
-end
+task :default => :build
 
-require 'rcov/rcovtask'
-Rcov::RcovTask.new do |test|
-  test.libs << 'test'
-  test.pattern = 'test/**/test_*.rb'
-  test.verbose = true
-end
-
-task :default => :test
-
-require 'rake/rdoctask'
+require 'rdoc/task'
 Rake::RDocTask.new do |rdoc|
   version = File.exist?('VERSION') ? File.read('VERSION') : ""
 

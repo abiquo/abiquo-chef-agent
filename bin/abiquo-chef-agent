@@ -1,0 +1,13 @@
+#!/usr/bin/env ruby
+require 'rubygems'
+require 'daemons'
+require 'run-as-root'
+
+options = {
+            :app_name => 'abiquo-chef-agent',
+            :dir_mode => :system,
+            :backtrace => true,
+            :log_output => true
+}
+
+Daemons.run(File.dirname(__FILE__) + '/abiquo-chef-daemon', options)

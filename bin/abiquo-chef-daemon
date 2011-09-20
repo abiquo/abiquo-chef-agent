@@ -1,0 +1,153 @@
+#!/usr/bin/env ruby
+require 'rubygems'
+require 'fileutils'
+require 'rest-client'
+require 'xmlsimple'
+
+def parse_leases_file(file='/var/lib/dhcp/dhclient.leases')
+  if File.exist? file
+    log "Default leases file '#{file}' found"
+    f = File.open(file)
+    l = {}
+    f.each do |line|
+      case line
+      when /fixed-address (.*);/
+        l[:ip] = $1
+      when /interface (.*);/
+        l[:interface] = $1
+      when /hardware ethernet (.*);/
+        l[:mac] = $1
+      when /option dhcp-server-identifier (.*);/
+        l[:dhcp_server] = $1
+      when /option routers (.*);/
+        l[:routers] = $1
+      when /option domain-name (.*);/
+        l[:domain_name] = $1
+      when /option vendor-encapsulated-options\s*"(.*)"\s*;/
+        tokens = $1.split('|')
+        l[:abiquo_api_url] = tokens[0].gsub("\\", "")
+        l[:abiquo_api_token] = tokens[1]
+      end
+    end
+    return l
+  else
+    log "Default leases file '#{file}' NOT found"
+  end
+end
+
+def log(msg, level = :info)
+  puts "#{level.to_s.upcase}: " + msg
+end
+
+LEASES_FILE = '/var/lib/dhcp/dhclient.leases'
+VAR_DIR = '/var/lib/abiquo-chef-agent'
+CHEF_CONFIG_DIR = '/etc/chef'
+BOOTSTRAP_XML = '/etc/chef/abiquo_bootstrap.xml'
+
+if File.exist? BOOTSTRAP_XML
+  log "Bootstrap XML found. Aborting.", :warning
+  exit 1
+end
+
+if not File.directory? VAR_DIR
+  log "Creating #{VAR_DIR} directory"
+  FileUtils.mkdir_p '/var/lib/abiquo-chef-agent'
+end
+
+if not File.directory? CHEF_CONFIG_DIR
+  log "Creating #{CHEF_CONFIG_DIR} directory"
+  FileUtils.mkdir_p '/etc/chef'
+end
+
+log "Creating initialized file"
+FileUtils.touch VAR_DIR + '/initialized'
+
+#
+# Parse info from DCHP client leases file
+#
+log "Parse leases file"
+leases = parse_leases_file(LEASES_FILE)
+if not leases
+  log "leases file not found. Aborting.", :error
+  exit 1
+else
+  log "Leases found #{leases.inspect}"
+
+  #
+  # Request node info from Abiquo API
+  #
+  log "Requesting Chef config from API #{leases[:abiquo_api_url]} OneTime #{leases[:abiquo_api_token]}"
+  begin
+    xml = RestClient.get leases[:abiquo_api_url], :authorization => "OneTime #{leases[:abiquo_api_token]}"
+  rescue Exception => e
+    log "Error requesting node info from API", :error
+    log e.message, :error
+    log e.backtrace, :error
+    exit
+  end
+  #
+  # HACK, FIXME 
+  #
+  xml.gsub!("&#xD;","\n")
+
+  #
+  # Parse the XML returned by API
+  #
+  log "Parsing XML from API"
+  xml_hash = XmlSimple.xml_in xml
+  node_name = xml_hash['node'].first
+  node_info = xml_hash['chef'].first
+
+  #
+  # Write the bootstrap XML
+  # Daemon will not run if this XML is found
+  #
+  File.open(BOOTSTRAP_XML, 'w') do |f|
+    f.puts xml
+  end
+
+  #
+  # Write Chef validation pem
+  #
+  File.open('/etc/chef/validation.pem', 'w') do |f|
+    f.puts node_info['validation-cert']
+  end
+
+  #
+  # Get required node info and write chef-client config file
+  #
+  validation_client_name = node_info['validation-client-name']
+  chef_server_url = node_info['chef-server-url']
+  recipes = node_info['recipes'].map { |h| "recipe[#{h['recipe'].first}]" }
+  log "Recipes found #{recipes.inspect}"
+  File.open('/etc/chef/client.rb', 'w') do |f|
+    f.puts "log_level        :info"
+    f.puts "log_location     STDOUT"
+    f.puts "chef_server_url  '#{chef_server_url}'"
+    f.puts "validation_client_name '#{validation_client_name}'"
+  end
+
+  #
+  # Write first-boot.json attributes
+  #
+  recipes_json = '"run_list": ["'
+  recipes_json << recipes.join(',')
+  recipes_json << '"]'
+  File.open('/etc/chef/first-boot.json', 'w') do |f|
+    f.puts "{"
+    f.puts recipes_json
+    f.puts "}"
+  end
+
+  #
+  # Everything in place, no run the client
+  #
+  log "Running chef-client"
+  log "chef-client -N #{node_name} --once -j /etc/chef/first-boot.json"
+  system "chef-client -N #{node_name} --once -j /etc/chef/first-boot.json"
+  if $? != 0
+    log "chef-client run failed", :error
+  else
+    log "chef-client run OK"
+  end
+end
