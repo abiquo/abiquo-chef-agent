@@ -24,7 +24,7 @@ def parse_leases_file(file='/var/lib/dhcp/dhclient.leases')
       when /option domain-name (.*);/
         l[:domain_name] = $1
       when /option vendor-encapsulated-options\s*"(.*)"\s*;/
-        tokens = $1.split('|')
+        tokens = $1.split('@@')
         l[:abiquo_api_url] = tokens[0].gsub("\\", "")
         l[:abiquo_api_token] = tokens[1]
       end
@@ -39,7 +39,7 @@ def log(msg, level = :info)
   puts "#{level.to_s.upcase}: " + msg.to_s
 end
 
-LEASES_FILE = '/var/lib/dhcp/dhclient.leases'
+LEASES_FILE = '/var/lib/dhcp3/dhclient.eth0.leases'
 VAR_DIR = '/var/lib/abiquo-chef-agent'
 CHEF_CONFIG_DIR = '/etc/chef'
 BOOTSTRAP_XML = '/etc/chef/abiquo_bootstrap.xml'
@@ -124,8 +124,14 @@ else
   #
   validation_client_name = node_info['validation-client-name']
   chef_server_url = node_info['chef-server-url']
-  recipes = node_info['recipes'].map { |h| "recipe[#{h['recipe'].first}]" }
-  log "Recipes found #{recipes.inspect}"
+  recipes = []
+  if node_info['recipes'].first.empty?
+    log "No recipes selected", :warning
+    recipes = []
+  else
+    recipes = node_info['recipes'].map { |h| "recipe[#{h['recipe'].first}]" }
+    log "Recipes found #{recipes.inspect}"
+  end
   File.open('/etc/chef/client.rb', 'w') do |f|
     f.puts "log_level        :info"
     f.puts "log_location     STDOUT"
@@ -136,13 +142,19 @@ else
   #
   # Write first-boot.json attributes
   #
-  recipes_json = '"run_list": ["'
-  recipes_json << recipes.join(',')
-  recipes_json << '"]'
-  File.open('/etc/chef/first-boot.json', 'w') do |f|
-    f.puts "{"
-    f.puts recipes_json
-    f.puts "}"
+  if not recipes.empty?
+    recipes_json = '"run_list": ["'
+    recipes_json << recipes.join(',')
+    recipes_json << '"]'
+    File.open('/etc/chef/first-boot.json', 'w') do |f|
+      f.puts "{"
+      f.puts recipes_json
+      f.puts "}"
+    end
+  else
+    File.open('/etc/chef/first-boot.json', 'w') do |f|
+      f.puts "{}"
+    end
   end
 
   #
