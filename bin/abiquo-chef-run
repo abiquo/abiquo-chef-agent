@@ -122,7 +122,7 @@ else
   # Everything in place, no run the client
   #
   # first, we run it once to register and apply recipes
-  cmd = "chef-client -N #{node_name} --once -j /etc/chef/first-boot.json 2>&1"
+  cmd = "chef-client -N #{node_name} --once -j /etc/chef/first-boot.json -L /var/log/chef-client.log"
   log "Running chef-client first time"
   log cmd
   output = `#{cmd}`
