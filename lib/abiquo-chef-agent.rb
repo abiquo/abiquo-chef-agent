@@ -1,6 +1,6 @@
 module Abiquo
   module Chef
-    VERSION="0.99"
+    VERSION="1.0"
 
     class Config
       def self.chef_config_dir
