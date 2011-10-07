@@ -4,13 +4,24 @@ require 'fileutils'
 require 'rest-client'
 require 'xmlsimple'
 require 'abiquo-chef-agent'
+require 'logger'
 include Abiquo::Chef
+
+Log = Logger.new Abiquo::Chef::Config.log_file
 
 def log(msg, level = :info)
   if level == :debug and not $DEBUG
     return
   end
-  puts "#{level.to_s.upcase}: " + msg.to_s
+  if level == :info
+    Log.info msg.to_s
+  elsif level == :warning
+    Log.warn msg.to_s
+  elsif level == :error
+    Log.error msg.to_s
+  else
+    Log.debug msg.to_s
+  end
 end
 
 CHEF_CONFIG_DIR = Abiquo::Chef::Config.chef_config_dir 

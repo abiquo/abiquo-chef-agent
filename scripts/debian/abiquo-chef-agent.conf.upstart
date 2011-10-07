@@ -12,5 +12,5 @@ pre-start script
     export RUBYOPT="-d"
 end script
     
-exec /usr/bin/abiquo-chef-run >> /var/log/abiquo-chef-run.log 2>&1
+exec /usr/bin/abiquo-chef-run 
 
