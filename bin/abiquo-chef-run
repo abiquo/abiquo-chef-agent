@@ -79,8 +79,15 @@ else
   #
   # Parse the XML returned by API
   #
-  log "Parsing XML from API"
-  bootstrap_config = BootstrapConfigParser.new(xml)
+  log "Parsing Bootstrap XML from API"
+  begin
+    bootstrap_config = BootstrapConfigParser.new(xml)
+  rescue Exception => e
+    log "Error parsing XML bootstrap file", :error
+    log e.message, :error
+    log e.backtrace.join("\n    "), :debug
+    exit 1
+  end
 
   #
   # Write Chef validation pem
