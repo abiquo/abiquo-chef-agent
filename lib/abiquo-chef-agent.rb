@@ -1,6 +1,9 @@
+require 'xmlsimple'
+
 module Abiquo
   module Chef
-    VERSION="1.0.1"
+
+    VERSION="1.0.2"
 
     class Config
       def self.chef_config_dir
@@ -17,6 +20,49 @@ module Abiquo
 
       def self.client_cert_file
         '/etc/chef/client.pem'
+      end
+
+    end
+
+    class BootstrapConfigParser
+
+      attr_reader :run_list, :node_name, :validation_client_name
+      attr_reader :chef_server_url, :validation_cert
+
+      def initialize(xml)
+        @raw_xml = xml
+        @hash = XmlSimple.xml_in xml.gsub("&#xD;","\n")
+        parse
+      end
+
+      def parse
+        @node_name = @hash['node'].first
+        if not @node_name or @node_name.strip.chomp.empty?
+          raise Exception.new("Invalid bootstrap XML. Missing <node> info.")
+        end
+
+        @node_info = @hash['chef'].first
+        if not @node_info
+          raise Exception.new("Invalid bootstrap XML. Missing <chef> info.")
+        end
+
+        @validation_client_name = @node_info['validation-client-name'].first
+        if not @validation_client_name or @validation_client_name.strip.chomp.empty?
+          raise Exception.new("Invalid bootstrap XML. Missing <validation-client-name> info.")
+        end
+
+        @validation_cert = @node_info['validation-cert'].first
+        if not @validation_cert or @validation_cert.strip.chomp.empty?
+          raise Exception.new("Invalid bootstrap XML. Missing <validation-cert> info.")
+        end
+        @chef_server_url = @node_info['chef-server-url'].first
+        if not @chef_server_url or @chef_server_url.strip.chomp.empty?
+          raise Exception.new("Invalid bootstrap XML. Missing <chef-server-url> info.")
+        end
+        @run_list = @node_info['runlist'].first['element']
+        if not @run_list
+          raise Exception.new("Invalid bootstrap XML. Missing <runlist>> info.")
+        end
       end
 
     end

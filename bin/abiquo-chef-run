@@ -67,15 +67,7 @@ else
   # HACK, FIXME 
   #
   xml.gsub!("&#xD;","\n")
-
-  #
-  # Parse the XML returned by API
-  #
-  log "Parsing XML from API"
-  xml_hash = XmlSimple.xml_in xml
-  node_name = xml_hash['node'].first
-  node_info = xml_hash['chef'].first
-
+  
   #
   # Write the bootstrap XML
   # Daemon will not run if this XML is found
@@ -85,23 +77,28 @@ else
   end
 
   #
+  # Parse the XML returned by API
+  #
+  log "Parsing XML from API"
+  bootstrap_config = BootstrapConfigParser.new(xml)
+
+  #
   # Write Chef validation pem
   #
   File.open('/etc/chef/validation.pem', 'w') do |f|
-    f.puts node_info['validation-cert']
+    f.puts bootstrap_config.validation_cert
   end
 
   #
   # Get required node info and write chef-client config file
   #
-  validation_client_name = node_info['validation-client-name']
-  chef_server_url = node_info['chef-server-url']
-  recipes = []
-  if node_info['recipes'].first.empty?
+  validation_client_name = bootstrap_config.validation_client_name
+  chef_server_url = bootstrap_config.chef_server_url
+  recipes = bootstrap_config.run_list
+  if recipes.empty?
     log "No recipes selected", :warning
     recipes = []
   else
-    recipes = node_info['recipes'].map { |h| "recipe[#{h['recipe'].first}]" }
     log "Recipes found #{recipes.inspect}"
   end
   File.open('/etc/chef/client.rb', 'w') do |f|
@@ -133,6 +130,7 @@ else
   # Everything in place, no run the client
   #
   # first, we run it once to register and apply recipes
+  node_name = bootstrap_config.node_name
   cmd = "chef-client -N #{node_name} --once -j /etc/chef/first-boot.json -L /var/log/chef-client.log"
   log "Running chef-client first time"
   log cmd
