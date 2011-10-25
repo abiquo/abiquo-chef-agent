@@ -3,7 +3,7 @@ require 'xmlsimple'
 module Abiquo
   module Chef
 
-    VERSION="1.0.2"
+    VERSION="1.0.3"
 
     class Config
       def self.chef_config_dir
@@ -22,6 +22,10 @@ module Abiquo
         '/etc/chef/client.pem'
       end
 
+      def self.validation_cert
+        '/etc/chef/validation.pem'
+      end
+
     end
 
     class BootstrapConfigParser
@@ -31,6 +35,9 @@ module Abiquo
 
       def initialize(xml)
         @raw_xml = xml
+        #
+        # HACK, FIXME 
+        #
         @hash = XmlSimple.xml_in xml.gsub("&#xD;","\n")
         parse
       end

@@ -7,6 +7,14 @@ require 'abiquo-chef-agent'
 require 'logger'
 include Abiquo::Chef
 
+at_exit do
+  if $!
+    log "BACKTRACE", :error
+    log $!.to_s, :error
+    log $@.to_s, :error
+  end
+end
+
 Log = Logger.new Abiquo::Chef::Config.log_file
 
 def log(msg, level = :info)
@@ -64,11 +72,6 @@ else
     exit 1
   end
   #
-  # HACK, FIXME 
-  #
-  xml.gsub!("&#xD;","\n")
-  
-  #
   # Write the bootstrap XML
   # Daemon will not run if this XML is found
   #
@@ -92,7 +95,7 @@ else
   #
   # Write Chef validation pem
   #
-  File.open('/etc/chef/validation.pem', 'w') do |f|
+  File.open(Abiquo::Chef::Config.validation_cert, 'w') do |f|
     f.puts bootstrap_config.validation_cert
   end
 
@@ -146,6 +149,11 @@ else
     log "chef-client run failed", :error
     log output, :debug
   else
+    #
+    # Remove validation certs and bootstrap XML
+    #
+    FileUtils.rm(Abiquo::Chef::Config.validation_cert)
+    FileUtils.rm(Abiquo::Chef::Config.bootstrap_backup_file)
     log "Setting hostname"
     output = `hostname #{node_name} 2>&1`
     log output, :debug
