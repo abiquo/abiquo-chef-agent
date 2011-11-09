@@ -3,7 +3,7 @@ require 'xmlsimple'
 module Abiquo
   module Chef
 
-    VERSION="1.0.4"
+    VERSION="1.0.5"
 
     class Config
       def self.chef_config_dir
@@ -87,10 +87,7 @@ module Abiquo
         leases = []
         search_dirs.each do |d|
           Dir["#{d}/*"].each do |f|
-            mtime = File.mtime f
-            if (Time.now - mtime) <= 600
-              leases << f
-            end
+            leases << f
           end
         end
         return leases
