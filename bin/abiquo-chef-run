@@ -154,15 +154,19 @@ else
   log "Running chef-client first time"
   log cmd
   output = `#{cmd}`
+  #
+  # Remove validation certs and bootstrap XML
+  #
+  if File.exist?(Abiquo::Chef::Config.validation_cert)
+    FileUtils.rm(Abiquo::Chef::Config.validation_cert)
+  end
+  if File.exist?(Abiquo::Chef::Config.bootstrap_backup_file)
+    FileUtils.rm(Abiquo::Chef::Config.bootstrap_backup_file)
+  end
   if $? != 0
     log "chef-client run failed", :error
     log output, :debug
   else
-    #
-    # Remove validation certs and bootstrap XML
-    #
-    FileUtils.rm(Abiquo::Chef::Config.validation_cert)
-    FileUtils.rm(Abiquo::Chef::Config.bootstrap_backup_file)
     log "Setting hostname"
     output = `hostname #{node_name} 2>&1`
     log output, :debug
