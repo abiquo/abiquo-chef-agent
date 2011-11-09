@@ -3,11 +3,15 @@ require 'xmlsimple'
 module Abiquo
   module Chef
 
-    VERSION="1.0.3"
+    VERSION="1.0.4"
 
     class Config
       def self.chef_config_dir
         '/etc/chef'
+      end
+
+      def self.ntp_server
+        'pool.ntp.org'
       end
 
       def self.log_file

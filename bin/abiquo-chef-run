@@ -49,6 +49,15 @@ if not File.directory? CHEF_CONFIG_DIR
 end
 
 #
+# Try to fix system clock with ntpdate
+#
+log "Trying to synchronize system clock"
+`/usr/sbin/ntpdate #{Abiquo::Chef::Config.ntp_server} > /dev/null 2>&1`
+if $? != 0
+  log "Could not update the system clock using ntpdate and #{Abiquo::Chef::Config.ntp_server} ntp server", :warning
+end
+
+#
 # Parse info from DCHP client leases file
 #
 log "Parsing leases file"
