@@ -3,7 +3,7 @@ require 'xmlsimple'
 module Abiquo
   module Chef
 
-    VERSION="1.0.5"
+    VERSION="1.0.6"
 
     class Config
       def self.chef_config_dir
@@ -37,6 +37,11 @@ module Abiquo
       attr_reader :run_list, :node_name, :validation_client_name
       attr_reader :chef_server_url, :validation_cert
 
+      #
+      # Parses an XML chunk
+      #
+      # xml: the xml content
+      #
       def initialize(xml)
         @raw_xml = xml
         #
@@ -70,10 +75,7 @@ module Abiquo
         if not @chef_server_url or @chef_server_url.strip.chomp.empty?
           raise Exception.new("Invalid bootstrap XML. Missing <chef-server-url> info.")
         end
-        @run_list = @node_info['runlist'].first['element']
-        if not @run_list
-          raise Exception.new("Invalid bootstrap XML. Missing <runlist>> info.")
-        end
+        @run_list = @node_info['runlist'].first['element'] || []
       end
 
     end

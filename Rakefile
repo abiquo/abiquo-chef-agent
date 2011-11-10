@@ -1,10 +1,11 @@
 require 'rubygems'
 require 'rake'
+require './lib/abiquo-chef-agent.rb'
 
 require 'jeweler'
 Jeweler::Tasks.new do |gem|
   # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
-  gem.version = File.exist?('VERSION') ? File.read('VERSION') : ""
+  gem.version = Abiquo::Chef::VERSION
 
   gem.name = "abiquo-chef-agent"
   gem.homepage = "http://github.com/abiquo/abiquo-chef-agent"
@@ -27,7 +28,7 @@ task :default => :build
 
 require 'rdoc/task'
 Rake::RDocTask.new do |rdoc|
-  version = File.exist?('VERSION') ? File.read('VERSION') : ""
+  version = Abiquo::Chef::VERSION
 
   rdoc.rdoc_dir = 'rdoc'
   rdoc.title = "abiquo-chef-agent #{version}"
