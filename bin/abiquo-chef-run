@@ -131,9 +131,9 @@ else
   # Write first-boot.json attributes
   #
   if not recipes.empty?
-    recipes_json = '"run_list": ["'
-    recipes_json << recipes.join(',')
-    recipes_json << '"]'
+    recipes_json = '"run_list": ['
+    recipes_json << (recipes.map{ |r| "\"#{r}\""}).join(',')
+    recipes_json << ']'
     File.open('/etc/chef/first-boot.json', 'w') do |f|
       f.puts "{"
       f.puts recipes_json
