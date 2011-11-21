@@ -107,8 +107,8 @@ module Abiquo
       #   :abiquo_api_token => token
       # }
       # 
-      def self.parse_leases_file
-        files = find_leases_file
+      def self.parse_leases_file(search_dirs = ['/var/lib/dhcp3', '/var/lib/dhcp', '/var/lib/dhclient'])
+        files = find_leases_file(search_dirs)
         files.each do |file|
           f = File.open(file)
           l = {}
@@ -133,7 +133,6 @@ module Abiquo
             end
           end
           if l[:abiquo_api_token]
-            log "Default leases file '#{file}' found"
             return l
           end
         end
