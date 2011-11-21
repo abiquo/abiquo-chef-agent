@@ -89,6 +89,7 @@ module Abiquo
         leases = []
         search_dirs.each do |d|
           Dir["#{d}/*"].each do |f|
+            next if f !~ /leases$/
             leases << f
           end
         end
