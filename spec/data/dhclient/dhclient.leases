@@ -1,0 +1,182 @@
+lease {
+  interface "eth0";
+  fixed-address 192.168.0.3;
+  option subnet-mask 255.255.255.0;
+  option routers 192.168.0.1;
+  option dhcp-lease-time 60000;
+  option dhcp-message-type 5;
+  option domain-name-servers 8.8.8.8;
+  option dhcp-server-identifier 192.168.0.1;
+  option vendor-encapsulated-options "http://10.60.20.11/api/cloud/virtualdatacenters/4/virtualappliances/12/virtualmachines/10/config/bootstrap@@Ykozf/WP/hred8HWnFOwHA==";
+  renew 4 2011/11/17 22:59:41;
+  rebind 5 2011/11/18 06:41:48;
+  expire 5 2011/11/18 08:46:48;
+}
+lease {
+  interface "eth0";
+  fixed-address 192.168.0.3;
+  option subnet-mask 255.255.255.0;
+  option routers 192.168.0.1;
+  option dhcp-lease-time 60000;
+  option dhcp-message-type 5;
+  option domain-name-servers 8.8.8.8;
+  option dhcp-server-identifier 192.168.0.1;
+  option vendor-encapsulated-options "http://10.60.20.11/api/cloud/virtualdatacenters/4/virtualappliances/12/virtualmachines/10/config/bootstrap@@Ykozf/WP/hred8HWnFOwHA==";
+  renew 5 2011/11/18 05:48:45;
+  rebind 5 2011/11/18 13:34:41;
+  expire 5 2011/11/18 15:39:41;
+}
+lease {
+  interface "eth0";
+  fixed-address 192.168.0.3;
+  option subnet-mask 255.255.255.0;
+  option routers 192.168.0.1;
+  option dhcp-lease-time 60000;
+  option dhcp-message-type 5;
+  option domain-name-servers 8.8.8.8;
+  option dhcp-server-identifier 192.168.0.1;
+  option vendor-encapsulated-options "http://10.60.20.11/api/cloud/virtualdatacenters/4/virtualappliances/12/virtualmachines/10/config/bootstrap@@Ykozf/WP/hred8HWnFOwHA==";
+  renew 5 2011/11/18 13:07:55;
+  rebind 5 2011/11/18 20:23:45;
+  expire 5 2011/11/18 22:28:45;
+}
+lease {
+  interface "eth0";
+  fixed-address 192.168.0.3;
+  option subnet-mask 255.255.255.0;
+  option routers 192.168.0.1;
+  option dhcp-lease-time 60000;
+  option dhcp-message-type 5;
+  option domain-name-servers 8.8.8.8;
+  option dhcp-server-identifier 192.168.0.1;
+  option vendor-encapsulated-options "http://10.60.20.11/api/cloud/virtualdatacenters/4/virtualappliances/12/virtualmachines/10/config/bootstrap@@Ykozf/WP/hred8HWnFOwHA==";
+  renew 5 2011/11/18 19:28:24;
+  rebind 6 2011/11/19 03:42:55;
+  expire 6 2011/11/19 05:47:55;
+}
+lease {
+  interface "eth0";
+  fixed-address 192.168.0.3;
+  option subnet-mask 255.255.255.0;
+  option routers 192.168.0.1;
+  option dhcp-lease-time 60000;
+  option dhcp-message-type 5;
+  option domain-name-servers 8.8.8.8;
+  option dhcp-server-identifier 192.168.0.1;
+  option vendor-encapsulated-options "http://10.60.20.11/api/cloud/virtualdatacenters/4/virtualappliances/12/virtualmachines/10/config/bootstrap@@Ykozf/WP/hred8HWnFOwHA==";
+  renew 6 2011/11/19 02:52:16;
+  rebind 6 2011/11/19 10:03:24;
+  expire 6 2011/11/19 12:08:24;
+}
+lease {
+  interface "eth0";
+  fixed-address 192.168.0.3;
+  option subnet-mask 255.255.255.0;
+  option routers 192.168.0.1;
+  option dhcp-lease-time 60000;
+  option dhcp-message-type 5;
+  option domain-name-servers 8.8.8.8;
+  option dhcp-server-identifier 192.168.0.1;
+  option vendor-encapsulated-options "http://10.60.20.11/api/cloud/virtualdatacenters/4/virtualappliances/12/virtualmachines/10/config/bootstrap@@Ykozf/WP/hred8HWnFOwHA==";
+  renew 6 2011/11/19 10:49:20;
+  rebind 6 2011/11/19 17:27:16;
+  expire 6 2011/11/19 19:32:16;
+}
+lease {
+  interface "eth0";
+  fixed-address 192.168.0.3;
+  option subnet-mask 255.255.255.0;
+  option routers 192.168.0.1;
+  option dhcp-lease-time 60000;
+  option dhcp-message-type 5;
+  option domain-name-servers 8.8.8.8;
+  option dhcp-server-identifier 192.168.0.1;
+  option vendor-encapsulated-options "http://10.60.20.11/api/cloud/virtualdatacenters/4/virtualappliances/12/virtualmachines/10/config/bootstrap@@Ykozf/WP/hred8HWnFOwHA==";
+  renew 6 2011/11/19 18:18:01;
+  rebind 0 2011/11/20 01:24:20;
+  expire 0 2011/11/20 03:29:20;
+}
+lease {
+  interface "eth0";
+  fixed-address 192.168.0.3;
+  option subnet-mask 255.255.255.0;
+  option routers 192.168.0.1;
+  option dhcp-lease-time 60000;
+  option dhcp-message-type 5;
+  option domain-name-servers 8.8.8.8;
+  option dhcp-server-identifier 192.168.0.1;
+  option vendor-encapsulated-options "http://10.60.20.11/api/cloud/virtualdatacenters/4/virtualappliances/12/virtualmachines/10/config/bootstrap@@Ykozf/WP/hred8HWnFOwHA==";
+  renew 0 2011/11/20 01:22:01;
+  rebind 0 2011/11/20 08:53:01;
+  expire 0 2011/11/20 10:58:01;
+}
+lease {
+  interface "eth0";
+  fixed-address 192.168.0.3;
+  option subnet-mask 255.255.255.0;
+  option routers 192.168.0.1;
+  option dhcp-lease-time 60000;
+  option dhcp-message-type 5;
+  option domain-name-servers 8.8.8.8;
+  option dhcp-server-identifier 192.168.0.1;
+  option vendor-encapsulated-options "http://10.60.20.11/api/cloud/virtualdatacenters/4/virtualappliances/12/virtualmachines/10/config/bootstrap@@Ykozf/WP/hred8HWnFOwHA==";
+  renew 0 2011/11/20 08:56:59;
+  rebind 0 2011/11/20 15:57:01;
+  expire 0 2011/11/20 18:02:01;
+}
+lease {
+  interface "eth0";
+  fixed-address 192.168.0.3;
+  option subnet-mask 255.255.255.0;
+  option routers 192.168.0.1;
+  option dhcp-lease-time 60000;
+  option dhcp-message-type 5;
+  option domain-name-servers 8.8.8.8;
+  option dhcp-server-identifier 192.168.0.1;
+  option vendor-encapsulated-options "http://10.60.20.11/api/cloud/virtualdatacenters/4/virtualappliances/12/virtualmachines/10/config/bootstrap@@Ykozf/WP/hred8HWnFOwHA==";
+  renew 0 2011/11/20 16:03:25;
+  rebind 0 2011/11/20 23:32:03;
+  expire 1 2011/11/21 01:37:03;
+}
+lease {
+  interface "eth0";
+  fixed-address 192.168.0.3;
+  option subnet-mask 255.255.255.0;
+  option routers 192.168.0.1;
+  option dhcp-lease-time 60000;
+  option dhcp-message-type 5;
+  option domain-name-servers 8.8.8.8;
+  option dhcp-server-identifier 192.168.0.1;
+  option vendor-encapsulated-options "http://10.60.20.11/api/cloud/virtualdatacenters/4/virtualappliances/12/virtualmachines/10/config/bootstrap@@Ykozf/WP/hred8HWnFOwHA==";
+  renew 0 2011/11/20 22:57:38;
+  rebind 1 2011/11/21 06:38:25;
+  expire 1 2011/11/21 08:43:25;
+}
+lease {
+  interface "eth0";
+  fixed-address 192.168.0.3;
+  option subnet-mask 255.255.255.0;
+  option routers 192.168.0.1;
+  option dhcp-lease-time 60000;
+  option dhcp-message-type 5;
+  option domain-name-servers 8.8.8.8;
+  option dhcp-server-identifier 192.168.0.1;
+  option vendor-encapsulated-options "http://10.60.20.11/api/cloud/virtualdatacenters/4/virtualappliances/12/virtualmachines/10/config/bootstrap@@Ykozf/WP/hred8HWnFOwHA==";
+  renew 1 2011/11/21 06:46:17;
+  rebind 1 2011/11/21 13:32:38;
+  expire 1 2011/11/21 15:37:38;
+}
+lease {
+  interface "eth0";
+  fixed-address 192.168.0.3;
+  option subnet-mask 255.255.255.0;
+  option routers 192.168.0.1;
+  option dhcp-lease-time 60000;
+  option dhcp-message-type 5;
+  option domain-name-servers 8.8.8.8;
+  option dhcp-server-identifier 192.168.0.1;
+  option vendor-encapsulated-options "http://10.60.20.11/api/cloud/virtualdatacenters/4/virtualappliances/12/virtualmachines/10/config/bootstrap@@Ykozf/WP/hred8HWnFOwHA==";
+  renew 1 2011/11/21 14:39:27;
+  rebind 1 2011/11/21 21:21:17;
+  expire 1 2011/11/21 23:26:17;
+}
