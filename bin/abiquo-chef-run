@@ -63,7 +63,7 @@ end
 log "Parsing leases file"
 leases = Util.parse_leases_file
 if not leases
-  log "Leases file not found. Aborting.", :error
+  log "Leases file not found or invalid. Current leases search path ['/var/lib/dhcp3', '/var/lib/dhcp', '/var/lib/dhclient'].", :error
   exit 1
 else
   log "Leases found #{leases.inspect}"
