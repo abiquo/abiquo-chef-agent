@@ -175,6 +175,9 @@ else
     File.open('/etc/hostname', 'w') do |f|
       f.puts node_name
     end
+    File.open('/etc/hosts', 'a') do |f|
+      f.puts "127.0.0.1		#{node_name}"
+    end
     log "chef-client run OK"
     log "Running chef-client in daemon mode"
     # Now we run it in daemon mode
