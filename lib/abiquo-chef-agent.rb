@@ -3,7 +3,7 @@ require 'xmlsimple'
 module Abiquo
   module Chef
 
-    VERSION="1.0.10"
+    VERSION="1.0.11"
 
     class Config
       def self.chef_config_dir
