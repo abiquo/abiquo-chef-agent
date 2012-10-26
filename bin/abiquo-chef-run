@@ -145,11 +145,36 @@ else
     end
   end
 
+
+  #
+  # Set the hostname
+  #
+  node_name = bootstrap_config.node_name
+
+  log "Setting hostname"
+  output = `hostname #{node_name} 2>&1`
+  log output, :debug
+
+  net_config_file = '/etc/sysconfig/network'
+  if File.exists? net_config_file
+    log "Configuring /etc/sysconfig/network with the new hostname"
+    data = File.read net_config_file
+    File.open net_config_file, 'w' do |f|
+     data.each_line {|l| l.include?('HOSTNAME') ? f.puts("HOSTNAME=#{node_name}\n") : f.puts(l)}
+    end
+  end
+  File.open('/etc/hostname', 'w') do |f|
+      f.puts node_name
+  end
+  File.open('/etc/hosts', 'a') do |f|
+      f.puts "127.0.0.1         #{node_name}"
+  end
+  log "done"
+
   #
   # Everything in place, no run the client
   #
   # first, we run it once to register and apply recipes
-  node_name = bootstrap_config.node_name
   cmd = "chef-client -N #{node_name} --once -j /etc/chef/first-boot.json -L /var/log/chef-client.log"
   log "Running chef-client first time"
   log cmd
@@ -169,25 +194,21 @@ else
     log "chef-client run failed", :error
     log output, :debug
   else
-    log "Setting hostname"
-    output = `hostname #{node_name} 2>&1`
-    log output, :debug
-    File.open('/etc/hostname', 'w') do |f|
-      f.puts node_name
-    end
-    File.open('/etc/hosts', 'a') do |f|
-      f.puts "127.0.0.1		#{node_name}"
-    end
-    log "chef-client run OK"
     log "Running chef-client in daemon mode"
-    # Now we run it in daemon mode
-    cmd = "chef-client -N #{node_name} -i 1800 -d -L /var/log/chef-client.log"
-    output = `#{cmd}`
-    if $? != 0
-      log "Running chef-client in daemon mode failed.", :error
-      log output, :debug
+    # Run the chef-client if not already running
+    if not (`ps aux|grep "chef-client "| grep -v grep|wc -l`.to_i > 0)
+        # Now we run it in daemon mode
+        cmd = "chef-client -N #{node_name} -i 1800 -d -L /var/log/chef-client.log"
+        output = `#{cmd}`
+        if $? != 0
+          log "Running chef-client in daemon mode failed.", :error
+          log output, :debug
+        else
+          log "Success."
+        end
     else
-      log "Success."
+        log "chef-client already running."
+        log `ps aux|grep "chef-client "| grep -v grep`
     end
   end
 end
