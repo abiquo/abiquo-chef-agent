@@ -1,6 +1,6 @@
 = abiquo-chef-agent
 
-Description goes here.
+A simple boot time execution daemon that allow to execute the Chef configuration of an Abiquo virtual machine.
 
 == Contributing to abiquo-chef-agent
  

@@ -1,9 +1,10 @@
 require 'xmlsimple'
+require 'json'
 
 module Abiquo
   module Chef
 
-    VERSION="1.0.11"
+    VERSION="2.0.0"
 
     class Config
       def self.chef_config_dir
@@ -34,7 +35,7 @@ module Abiquo
 
     class BootstrapConfigParser
 
-      attr_reader :run_list, :node_name, :validation_client_name
+      attr_reader :node_config, :node_name, :validation_client_name
       attr_reader :chef_server_url, :validation_cert
 
       #
@@ -44,38 +45,42 @@ module Abiquo
       #
       def initialize(xml)
         @raw_xml = xml
-        #
         # HACK, FIXME 
-        #
         @hash = XmlSimple.xml_in xml.gsub("&#xD;","\n")
         parse
       end
 
       def parse
+        validate
         @node_name = @hash['node'].first
-        if not @node_name or @node_name.strip.chomp.empty?
-          raise Exception.new("Invalid bootstrap XML. Missing <node> info.")
-        end
+        raise Exception.new("Invalid bootstrap XML. Missing <node> info.") unless @node_name.is_a? String and not @node_name.strip.chomp.empty?
 
         @node_info = @hash['chef'].first
-        if not @node_info
-          raise Exception.new("Invalid bootstrap XML. Missing <chef> info.")
-        end
 
         @validation_client_name = @node_info['validation-client-name'].first
-        if not @validation_client_name or @validation_client_name.strip.chomp.empty?
-          raise Exception.new("Invalid bootstrap XML. Missing <validation-client-name> info.")
-        end
+        raise Exception.new("Invalid bootstrap XML. Missing <validation-client-name> info.") unless @validation_client_name.is_a? String and not @validation_client_name.strip.chomp.empty?
 
         @validation_cert = @node_info['validation-cert'].first
-        if not @validation_cert or @validation_cert.strip.chomp.empty?
-          raise Exception.new("Invalid bootstrap XML. Missing <validation-cert> info.")
-        end
+        raise Exception.new("Invalid bootstrap XML. Missing <validation-cert> info.") unless @validation_cert.is_a? String and not @validation_cert.strip.chomp.empty?
+
         @chef_server_url = @node_info['chef-server-url'].first
-        if not @chef_server_url or @chef_server_url.strip.chomp.empty?
-          raise Exception.new("Invalid bootstrap XML. Missing <chef-server-url> info.")
-        end
-        @run_list = @node_info['runlist'].first['element'] || []
+        raise Exception.new("Invalid bootstrap XML. Missing <chef-server-url> info.") unless @chef_server_url.is_a? String and not @chef_server_url.strip.chomp.empty?
+
+        runlist = @node_info['runlist'].first['element']
+        attributes = @node_info['attributes'].first unless @node_info['attributes'].nil?
+        @node_config = JSON.parse(attributes || '{}')
+        @node_config.merge!(JSON.parse("{\"run_list\" : [#{runlist.map{ |r| "\"#{r}\""}.join(',')}]}")) if runlist
+      end
+
+      private
+
+      def validate
+        raise Exception.new "Invalid bootstrap XML. Missing <node> element." unless @hash.has_key? 'node'
+        raise Exception.new "Invalid bootstrap XML. Missing <chef> element." unless @hash.has_key? 'chef'
+        raise Exception.new("Invalid bootstrap XML. Missing <chef> info.") if @hash['chef'].empty? or @hash['chef'][0].empty?
+        raise Exception.new "Invalid bootstrap XML. Missing <validation-cert> element." unless @hash['chef'].first.has_key? 'validation-cert'
+        raise Exception.new "Invalid bootstrap XML. Missing <validation-client-name> element." unless @hash['chef'].first.has_key? 'validation-client-name'
+        raise Exception.new "Invalid bootstrap XML. Missing <chef-server-url> element." unless @hash['chef'].first.has_key? 'chef-server-url'
       end
 
     end
@@ -142,3 +147,4 @@ module Abiquo
     end
   end
 end
+

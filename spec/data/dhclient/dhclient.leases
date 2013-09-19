@@ -8,6 +8,8 @@ lease {
   option domain-name-servers 8.8.8.8;
   option dhcp-server-identifier 192.168.0.1;
   option vendor-encapsulated-options "http://10.60.20.11/api/cloud/virtualdatacenters/4/virtualappliances/12/virtualmachines/10/config/bootstrap@@Ykozf/WP/hred8HWnFOwHA==";
+  option domain-name "abiquo.com";
+  option hardware ethernet 00:00:00:00:00:00;
   renew 4 2011/11/17 22:59:41;
   rebind 5 2011/11/18 06:41:48;
   expire 5 2011/11/18 08:46:48;
