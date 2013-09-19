@@ -77,7 +77,7 @@ else
   rescue Exception => e
     log "Error requesting node info from API", :error
     log e.message, :error
-    log e.backtrace.join("\n    "), :debug
+    log e.backtrace.join("\n    ")
     exit 1
   end
   #
@@ -97,7 +97,7 @@ else
   rescue Exception => e
     log "Error parsing XML bootstrap file", :error
     log e.message, :error
-    log e.backtrace.join("\n    "), :debug
+    log e.backtrace.join("\n    ")
     exit 1
   end
 
@@ -107,18 +107,18 @@ else
   File.open(Abiquo::Chef::Config.validation_cert, 'w') do |f|
     f.puts bootstrap_config.validation_cert
   end
+  log "Validation cert written"
 
   #
   # Get required node info and write chef-client config file
   #
   validation_client_name = bootstrap_config.validation_client_name
   chef_server_url = bootstrap_config.chef_server_url
-  recipes = bootstrap_config.run_list
-  if recipes.empty?
-    log "No recipes selected", :warning
-    recipes = []
+  node_config = bootstrap_config.node_config
+  if node_config['run_list']
+    log "Recipes found #{node_config.inspect}"
   else
-    log "Recipes found #{recipes.inspect}"
+    log "No recipes selected", :warning
   end
   File.open('/etc/chef/client.rb', 'w') do |f|
     f.puts "log_level        :info"
@@ -130,20 +130,11 @@ else
   #
   # Write first-boot.json attributes
   #
-  if not recipes.empty?
-    recipes_json = '"run_list": ['
-    recipes_json << (recipes.map{ |r| "\"#{r}\""}).join(',')
-    recipes_json << ']'
-    File.open('/etc/chef/first-boot.json', 'w') do |f|
-      f.puts "{"
-      f.puts recipes_json
-      f.puts "}"
-    end
-  else
-    File.open('/etc/chef/first-boot.json', 'w') do |f|
-      f.puts "{}"
-    end
+  File.open('/etc/chef/first-boot.json', 'w') do |f|
+    node_config ||= {}
+    f.puts node_config.to_json
   end
+  log "Written '#{node_config.to_json}' to /etc/chef/first-boot.json file"
 
 
   #
@@ -153,7 +144,7 @@ else
 
   log "Setting hostname"
   output = `hostname #{node_name} 2>&1`
-  log output, :debug
+  log output, :info
 
   net_config_file = '/etc/sysconfig/network'
   if File.exists? net_config_file
@@ -192,7 +183,7 @@ else
   end
   if $? != 0
     log "chef-client run failed", :error
-    log output, :debug
+    log output, :info
   else
     log "Running chef-client in daemon mode"
     # Run the chef-client if not already running
@@ -202,7 +193,7 @@ else
         output = `#{cmd}`
         if $? != 0
           log "Running chef-client in daemon mode failed.", :error
-          log output, :debug
+          log output
         else
           log "Success."
         end
