@@ -24,7 +24,7 @@ lease {
   option domain-name-servers 8.8.8.8;
   option dhcp-server-identifier 192.168.0.1;
   option vendor-encapsulated-options "http://10.60.20.11/api/cloud/virtualdatacenters/4/virtualappliances/12/virtualmachines/10/config/bootstrap@@Ykozf/WP/hred8HWnFOwHA==";
-  renew 5 2011/11/18 05:48:45;
+  renew 5 2012/11/18 05:48:45;
   rebind 5 2011/11/18 13:34:41;
   expire 5 2011/11/18 15:39:41;
 }

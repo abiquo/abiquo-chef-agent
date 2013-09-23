@@ -73,7 +73,7 @@ else
   #
   log "Requesting Chef config from API #{leases[:abiquo_api_url]} OneTime #{leases[:abiquo_api_token]}"
   begin
-    xml = RestClient.get leases[:abiquo_api_url], :authorization => "OneTime #{leases[:abiquo_api_token]}"
+    xml = RestClient.get leases[:abiquo_api_url], :authorization => "OneTime #{leases[:abiquo_api_token]}", :accept => "application/vnd.abiquo.extended+xml"
   rescue Exception => e
     log "Error requesting node info from API", :error
     log e.message, :error

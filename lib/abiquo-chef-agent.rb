@@ -1,10 +1,11 @@
 require 'xmlsimple'
 require 'json'
+require 'time'
 
 module Abiquo
   module Chef
 
-    VERSION="2.0.0"
+    VERSION="2.0.1"
 
     class Config
       def self.chef_config_dir
@@ -115,11 +116,13 @@ module Abiquo
       # 
       def self.parse_leases_file(search_dirs = ['/var/lib/dhcp3', '/var/lib/dhcp', '/var/lib/dhclient'])
         files = find_leases_file(search_dirs)
+        leases = []
         files.each do |file|
-          f = File.open(file)
           l = {}
-          f.each do |line|
+          File.open(file).each { |line|
             case line
+            when /^lease \{/
+              l = {}
             when /fixed-address (.*);/
               l[:ip] = $1
             when /interface (.*);/
@@ -132,17 +135,18 @@ module Abiquo
               l[:routers] = $1
             when /option domain-name (.*);/
               l[:domain_name] = $1
+            when /renew \d+ (.+);/
+              l[:renew] = Time.parse $1
             when /option vendor-encapsulated-options\s*"(.*)"\s*;/
               tokens = $1.split('@@')
               l[:abiquo_api_url] = tokens[0].gsub("\\", "")
               l[:abiquo_api_token] = tokens[1]
+            when /^\}/
+              leases << l.clone if l[:abiquo_api_token]
             end
-          end
-          if l[:abiquo_api_token]
-            return l
-          end
+          }.close
         end
-        return nil
+        return leases.sort_by { |l| l[:renew] }.last
       end
     end
   end
