@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'time'
 include Abiquo::Chef
 
 describe Util do
@@ -24,12 +25,14 @@ describe Util do
     it 'should  have a valid API URL' do
       @leases[:abiquo_api_url].should match(/http(s)?:\/\//)
     end
+
+    it 'should return latest lease' do
+      @leases[:renew].should eql(Time.parse('2012-11-18 05:48:45 +0100'))
+    end
+
     it 'should  have a valid token' do
       @leases[:abiquo_api_token].should have_at_least(5).characters
     end
-    #it 'should  have a valid mac' do
-    #  #@leases[:mac].should match(/([a-f]{2}:){3}[a-f]{2}/m)
-    #end
 
   end
 
