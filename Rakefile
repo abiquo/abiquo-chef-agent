@@ -13,7 +13,7 @@ Jeweler::Tasks.new do |gem|
   gem.summary = %Q{Abiquo Chef Agent}
   gem.description = %Q{Abiquo Chef Agent}
   gem.email = "ruby-gems@abiquo.com"
-  gem.authors = ["Salvador Girones", "Sergio Rubio", "Serafin Sedano"]
+  gem.authors = ["Salvador Girones", "Sergio Rubio", "Serafin Sedano", "Ignasi Barrera"]
   gem.add_runtime_dependency 'run-as-root'
   gem.add_runtime_dependency 'chef'
   gem.add_runtime_dependency 'daemons'
