@@ -1,8 +1,8 @@
 require 'rubygems'
 require 'rake'
 require './lib/abiquo-chef-agent.rb'
-
 require 'jeweler'
+
 Jeweler::Tasks.new do |gem|
   # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
   gem.version = Abiquo::Chef::VERSION
@@ -19,9 +19,9 @@ Jeweler::Tasks.new do |gem|
   gem.add_runtime_dependency 'daemons'
   gem.add_runtime_dependency 'rest-client'
   gem.add_runtime_dependency 'xml-simple'
-  gem.files.exclude 'rubygem-abiquo-chef-agent.spec'
   #  gem.add_development_dependency 'rspec', '> 1.2.3'
 end
+
 Jeweler::RubygemsDotOrgTasks.new
 
 task :default => :build

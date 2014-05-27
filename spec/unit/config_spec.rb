@@ -31,5 +31,9 @@ describe Abiquo::Chef::Config do
       @config.client_cert_file.should be_a(String)
     end
 
+    it "should have a valid bootstrap xml mediatype" do
+      @config.bootstrap_mediatype.should match(/^application\/vnd.abiquo.[a-z]+\+xml(;version=[0-9](\.[0-9]+)+)?$/)
+    end
+
   end
 end
