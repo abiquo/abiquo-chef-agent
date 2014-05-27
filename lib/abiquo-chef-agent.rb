@@ -32,6 +32,10 @@ module Abiquo
         '/etc/chef/validation.pem'
       end
 
+      def self.bootstrap_mediatype
+          'application/vnd.abiquo.bootstrap+xml'
+      end
+
     end
 
     class BootstrapConfigParser
