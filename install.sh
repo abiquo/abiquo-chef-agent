@@ -7,14 +7,14 @@ fi
 
 DIST="dist/centos"
 
-"Installing ntp..."
+echo "Installing ntp..."
 yum --quiet --assumeyes install ntp
 
 echo "Installing Chef..."
 curl -L https://www.opscode.com/chef/install.sh | bash
 
 echo "Installing the Abiquo Chef Agent gem..."
-/opt/chef/embedded/bin/gem install abiquo-chef-run
+/opt/chef/embedded/bin/gem install abiquo-chef-agent
 
 ln -s /opt/chef/embedded/bin/abiquo-chef-run /usr/bin
 cp ${DIST}/abiquo-chef-run /etc/init.d
