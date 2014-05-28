@@ -3,6 +3,14 @@ abiquo-chef-agent
 
 A simple boot time execution daemon that allow to execute the Chef configuration of an Abiquo virtual machine.
 
+## Installing
+
+Installation script currently targets a CentOS operating system. The script will install Chef and all the agent
+dependencies. The installation script must be run as root:
+
+    chmod +x install.sh
+    ./install.sh
+
 ## Contributing to abiquo-chef-agent
  
 * Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet

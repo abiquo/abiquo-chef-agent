@@ -1,36 +1,36 @@
-#!/bin/sh
+#!/bin/bash
+# 
+# abiquo-chef-run Startup script for the Abiquo Chef Agent
 #
-# abiquo-chef-agent Abiquo Agent to Manage Chef Node initial registration
-#
-# chkconfig:   - 80 01
-# description: Abiquo Chef Agent
+# chkconfig: - 98 02
+# description: Startup script for the Abiquo Chef Agent.
 
 ### BEGIN INIT INFO
-# Provides: abiquo-chef-agent
+# Provides: abiquo-chef-run
 # Required-Start: $local_fs $network $remote_fs
 # Required-Stop: $local_fs $network $remote_fs
 # Should-Start: $named $time
 # Should-Stop: $named $time
 # Short-Description: Startup script for the Abiquo Chef Agent
-# Description: Abiquo Agent to Manage Chef Node initial registration
+# Description: Startup script for the Abiquo Chef Agent.
 ### END INIT INFO
 
-# Source function library.
-. /etc/rc.d/init.d/functions
+# Source function library
+. /etc/init.d/functions
 
-exec="/usr/bin/abiquo-chef-agent"
-prog="abiquo-chef-agent"
-config="/etc/sysconfig/abiquo-chef-agent"
+exec="/usr/bin/abiquo-chef-run"
+prog="abiquo-chef-run"
 
 [ -e /etc/sysconfig/$prog ] && . /etc/sysconfig/$prog
 
-lockfile=/var/lock/subsys/$prog
+pidfile=${PIDFILE-/var/run/chef/abiquo-chef-run.pid}
+lockfile=${LOCKFILE-/var/lock/subsys/$prog}
+options=${OPTIONS-}
 
 start() {
     [ -x $exec ] || exit 5
-    #[ -f $config ] || exit 6
     echo -n $"Starting $prog: "
-    $exec start
+    daemon abiquo-chef-run 
     retval=$?
     echo
     [ $retval -eq 0 ] && touch $lockfile
@@ -39,15 +39,14 @@ start() {
 
 stop() {
     echo -n $"Stopping $prog: "
-    # stop it here, often "killproc $prog"
-    $exec stop
+    killproc -p $pidfile abiquo-chef-run
     retval=$?
     echo
     [ $retval -eq 0 ] && rm -f $lockfile
     return $retval
 }
 
-restart() {
+restart () {
     stop
     start
 }
@@ -62,13 +61,12 @@ force_reload() {
 
 rh_status() {
     # run checks to determine if the service is running or use generic status
-    status $prog
+    status -p $pidfile $prog
 }
 
 rh_status_q() {
     rh_status >/dev/null 2>&1
 }
-
 
 case "$1" in
     start)
