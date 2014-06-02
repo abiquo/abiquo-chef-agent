@@ -7,7 +7,7 @@ fi
 
 DIST="dist/centos"
 
-echo "Installing ntp..."
+echo "Installing NTP..."
 yum --quiet --assumeyes install ntp
 
 echo "Installing Chef..."
@@ -23,6 +23,11 @@ chmod +x /etc/init.d/abiquo-chef-run
 chkconfig --add abiquo-chef-run
 chkconfig abiquo-chef-run on
 
+echo "Configuring DHCP..."
 cp ${DIST}/dhclient.conf /etc/dhcp/
+IFACES=`ip link show | grep ^[0-9]: | grep -iv loopback | cut -d: -f2 | tr -d ' '`
+for IFACE in ${IFACES}; do
+    cp ${DIST}/dhclient.conf /etc/dhcp/dhclient-${IFACE}.conf
+done
 
 echo "Done!"
