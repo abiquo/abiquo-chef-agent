@@ -8,31 +8,31 @@ describe Abiquo::Chef::Config do
   describe "default options" do
 
     it "should have a valid chef_config_dir" do
-      @config.chef_config_dir.should be_a(String)
+      expect(@config.chef_config_dir).to be_a(String)
     end
     
     it "should have a valid ntp_server" do
-      @config.ntp_server.should be_a(String)
+      expect(@config.ntp_server).to be_a(String)
     end
 
     it "should have a valid log_file" do
-      @config.log_file.should be_a(String)
+      expect(@config.log_file).to be_a(String)
     end
     
     it "should have a valid bootstrap_backup_file" do
-      @config.bootstrap_backup_file.should be_a(String)
+      expect(@config.bootstrap_backup_file).to be_a(String)
     end
     
     it "should have a valid validation_cert" do
-      @config.validation_cert.should be_a(String)
+      expect(@config.validation_cert).to be_a(String)
     end
     
     it "should have a valid client_cert_file" do
-      @config.client_cert_file.should be_a(String)
+      expect(@config.client_cert_file).to be_a(String)
     end
 
     it "should have a valid bootstrap xml mediatype" do
-      @config.bootstrap_mediatype.should match(/^application\/vnd.abiquo.[a-z]+\+xml(;version=[0-9](\.[0-9]+)+)?$/)
+      expect(@config.bootstrap_mediatype).to match(/^application\/vnd.abiquo.[a-z]+\+xml(;version=[0-9](\.[0-9]+)+)?$/)
     end
 
   end

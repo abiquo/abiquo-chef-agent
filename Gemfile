@@ -1,6 +1,9 @@
+source 'https://rubygems.org'
+
 group :development do
-  gem "rspec", ">= 0"
-  gem "bundler", "~> 1.0.0"
+  gem "rspec"
+  gem "rspec-collection_matchers"
   gem "jeweler"
   gem "simplecov", ">= 0"
+  gem "xml-simple"
 end

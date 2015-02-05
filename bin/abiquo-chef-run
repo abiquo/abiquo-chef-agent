@@ -163,9 +163,7 @@ else
   log "done"
 
   #
-  # Everything in place, no run the client
-  #
-  # first, we run it once to register and apply recipes
+  # Everything in place, so run the client
   cmd = "chef-client -N #{node_name} --once -j /etc/chef/first-boot.json -L /var/log/chef-client.log"
   log "Running chef-client first time"
   log cmd
@@ -184,22 +182,5 @@ else
   if $? != 0
     log "chef-client run failed", :error
     log output, :info
-  else
-    log "Running chef-client in daemon mode"
-    # Run the chef-client if not already running
-    if not (`ps aux|grep "chef-client "| grep -v grep|wc -l`.to_i > 0)
-        # Now we run it in daemon mode
-        cmd = "chef-client -N #{node_name} -i 1800 -d -L /var/log/chef-client.log"
-        output = `#{cmd}`
-        if $? != 0
-          log "Running chef-client in daemon mode failed.", :error
-          log output
-        else
-          log "Success."
-        end
-    else
-        log "chef-client already running."
-        log `ps aux|grep "chef-client "| grep -v grep`
-    end
   end
 end

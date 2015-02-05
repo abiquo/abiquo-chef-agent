@@ -1,6 +1,6 @@
 require 'rubygems'
-require 'rspec/autorun'
 require 'simplecov'
+require 'rspec/collection_matchers'
 
 SimpleCov.start do
   add_filter '/spec/'

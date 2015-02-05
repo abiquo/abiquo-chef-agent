@@ -83,16 +83,16 @@ describe "Bootstrap Config Parser" do
 
     describe "name" do
       it "should be a string" do
-        @cp.node_name.should be_a(String)
+        expect(@cp.node_name).to be_a(String)
       end
       it "should start with ABQ-" do
-        @cp.node_name.should match(/^ABQ-/)
+        expect(@cp.node_name).to match(/^ABQ-/)
       end
     end
 
     describe "node_config" do
       it "should be a Hash" do
-        @cp.node_config.should be_a(Hash)
+        expect(@cp.node_config).to be_a(Hash)
       end
 
       it "runlist should be an empty missing" do
@@ -101,22 +101,22 @@ describe "Bootstrap Config Parser" do
       end
 
       it "should have three elements" do
-        @cp.node_config.should have(3).items
+        expect(@cp.node_config).to have(3).items
       end
 
       it "runlist should have a two items in the runlist" do
-        @cp.node_config["run_list"].should have(2).items
+        expect(@cp.node_config["run_list"]).to have(2).items
       end
 
       it "should be an array of strings" do
         @cp.node_config["run_list"].each do |i|
-          i.should be_a(String)
+          expect(i).to be_a(String)
         end
       end
 
       it "should have a recipe and a role" do
-        @cp.node_config["run_list"].first.should match(/role\[/)
-        @cp.node_config["run_list"].last.should match(/recipe\[/)
+        expect(@cp.node_config["run_list"].first).to match(/role\[/)
+        expect(@cp.node_config["run_list"].last).to match(/recipe\[/)
       end
 
       it "should contains boundary and newrelic" do
@@ -133,29 +133,29 @@ describe "Bootstrap Config Parser" do
 
       it "attributes should be missing" do
         cp = BootstrapConfigParser.new(File.read(data_dir + "bootstrap_empty_runlist_no_attributes.xml"))
-        cp.node_config.size.should be(0)
+        expect(cp.node_config.size).to be(0)
       end
 
     end
 
     describe "chef-server-url" do
       it "should be a URL" do
-        @cp.chef_server_url.should match(/^http(s)?:\/\//)
+        expect(@cp.chef_server_url).to match(/^http(s)?:\/\//)
       end
     end
 
     describe "validation-client-name" do
       it "should be a String" do
-        @cp.validation_client_name.should be_a(String)
+        expect(@cp.validation_client_name).to be_a(String)
       end
     end
 
     describe "validation_cert" do
       it 'should start with -----BEGIN RSA PRIVATE KEY' do
-        @cp.validation_cert.should match(/^-----BEGIN RSA PRIVATE KEY/)
+        expect(@cp.validation_cert).to match(/^-----BEGIN RSA PRIVATE KEY/)
       end
       it 'should end with END RSA PRIVATE KEY-----' do
-        @cp.validation_cert.should match(/END RSA PRIVATE KEY-----$/)
+        expect(@cp.validation_cert).to match(/END RSA PRIVATE KEY-----$/)
       end
     end
 
