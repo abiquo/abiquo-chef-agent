@@ -125,7 +125,7 @@ chkconfig --add abiquo-chef-run
 chkconfig abiquo-chef-run on
 
 echo "Configuring DHCP..."
-read -r -d '' DHCP << EOF
+read -r -d '' DHCP << 'EOF'
 option rfc3442-classless-static-routes code 121 = array of unsigned integer 8;
 
 send host-name "<hostname>";
@@ -135,11 +135,11 @@ request subnet-mask, broadcast-address, time-offset, routers,
         rfc3442-classless-static-routes, ntp-servers, vendor-encapsulated-options;
 EOF
 
-echo ${DHCP} >/etc/dhcp/dhclient.conf
+echo "${DHCP}" >/etc/dhcp/dhclient.conf
 
 IFACES=`ip link show | grep ^[0-9]: | grep -iv loopback | cut -d: -f2 | tr -d ' '`
 for IFACE in ${IFACES}; do
-    echo ${DHCP} >/etc/dhcp/dhclient-${IFACE}.conf
+    echo "${DHCP}" >/etc/dhcp/dhclient-${IFACE}.conf
 done
 
 echo "Done!"

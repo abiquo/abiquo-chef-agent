@@ -8,7 +8,7 @@ fi
 echo "Preparing the system..."
 apt-get install -y ntp build-essential
 
-cat > /etc/init/abiquo-chef-agent.conf << EOF
+cat > /etc/init/abiquo-chef-agent.conf << 'EOF'
 # abiquo-chef-agent - Abiquo Chef Agent
 #
 # Configures the Abiquo Chef Agent daemon
@@ -33,7 +33,7 @@ ln -s /opt/chef/embedded/bin/abiquo-chef-run /usr/bin
 cp abiquo-chef-agent.conf /etc/init
 
 echo "Configuring DHCP..."
-cat > /etc/dhcp/dhclient.conf << EOF
+cat > /etc/dhcp/dhclient.conf << 'EOF'
 option rfc3442-classless-static-routes code 121 = array of unsigned integer 8;
 
 send host-name "<hostname>";
