@@ -1,4 +1,23 @@
 #!/bin/bash
+
+if [[ ${UID} -ne 0 ]]; then
+    echo "${0} must be run as root"
+    exit 1
+fi
+
+echo "Preparing the system..."
+yum --assumeyes install ntp gcc-c++ libstdc++-devel
+
+echo "Installing Chef..."
+curl -L https://www.opscode.com/chef/install.sh | bash
+
+echo "Installing the Abiquo Chef Agent gem..."
+/opt/chef/embedded/bin/gem install xml-simple
+/opt/chef/embedded/bin/gem install abiquo-chef-agent
+
+ln -s /opt/chef/embedded/bin/abiquo-chef-run /usr/bin
+cat > /etc/init.d/abiquo-chef-run << 'EOF'
+#!/bin/bash
 # 
 # abiquo-chef-run Startup script for the Abiquo Chef Agent
 #
@@ -99,3 +118,28 @@ case "$1" in
         exit 2
 esac
 exit $?
+EOF
+
+chmod +x /etc/init.d/abiquo-chef-run
+chkconfig --add abiquo-chef-run
+chkconfig abiquo-chef-run on
+
+echo "Configuring DHCP..."
+read -r -d '' DHCP << EOF
+option rfc3442-classless-static-routes code 121 = array of unsigned integer 8;
+
+send host-name "<hostname>";
+request subnet-mask, broadcast-address, time-offset, routers,
+        domain-name, domain-name-servers, domain-search, host-name,
+        netbios-name-servers, netbios-scope, interface-mtu,
+        rfc3442-classless-static-routes, ntp-servers, vendor-encapsulated-options;
+EOF
+
+echo ${DHCP} >/etc/dhcp/dhclient.conf
+
+IFACES=`ip link show | grep ^[0-9]: | grep -iv loopback | cut -d: -f2 | tr -d ' '`
+for IFACE in ${IFACES}; do
+    echo ${DHCP} >/etc/dhcp/dhclient-${IFACE}.conf
+done
+
+echo "Done!"
