@@ -6,6 +6,7 @@ if [[ `id -u` -ne 0 ]]; then
 fi
 
 echo "Preparing the system..."
+apt-get update
 apt-get install -y ntp build-essential
 
 cat > /etc/init/abiquo-chef-agent.conf << 'EOF'
@@ -30,7 +31,6 @@ echo "Installing the Abiquo Chef Agent gem..."
 /opt/chef/embedded/bin/gem install abiquo-chef-agent
 
 ln -s /opt/chef/embedded/bin/abiquo-chef-run /usr/bin
-cp abiquo-chef-agent.conf /etc/init
 
 echo "Configuring DHCP..."
 cat > /etc/dhcp/dhclient.conf << 'EOF'
