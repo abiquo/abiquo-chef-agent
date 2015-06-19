@@ -5,11 +5,11 @@ A simple boot time execution daemon that allow to execute the Chef configuration
 
 ## Installing
 
-Installation script currently targets a CentOS operating system. The script will install Chef and all the agent
-dependencies. The installation script must be run as root:
+Installation script currently targets only CentOS and Ubuntu operating systems. The script will install Chef and
+all the agent dependencies. The installation script must be run as root:
 
-    chmod +x install.sh
-    ./install.sh
+    chmod +x install-centos.sh
+    ./install-centos.sh
 
 ## Contributing to abiquo-chef-agent
  
