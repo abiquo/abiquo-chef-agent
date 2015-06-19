@@ -19,7 +19,7 @@ start on (local-filesystems
           and net-device-up IFACE=eth0)
 
 stop on runlevel [!2345]
-exec /usr/local/bin/abiquo-chef-run
+exec /usr/bin/abiquo-chef-run
 EOF
 
 echo "Installing Chef..."
