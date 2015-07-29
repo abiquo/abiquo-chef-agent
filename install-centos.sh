@@ -1,5 +1,21 @@
 #!/bin/bash
 
+# Copyright (C) 2008 Abiquo Holdings S.L.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+AGENT_GEM_VERSION=2.0.6
+
 if [[ ${UID} -ne 0 ]]; then
     echo "${0} must be run as root"
     exit 1
@@ -12,8 +28,7 @@ echo "Installing Chef..."
 curl -L https://www.opscode.com/chef/install.sh | bash
 
 echo "Installing the Abiquo Chef Agent gem..."
-/opt/chef/embedded/bin/gem install xml-simple
-/opt/chef/embedded/bin/gem install abiquo-chef-agent
+/opt/chef/embedded/bin/gem install abiquo-chef-agent -v ${AGENT_CHEF_VERSION}
 
 ln -s /opt/chef/embedded/bin/abiquo-chef-run /usr/bin
 cat > /etc/init.d/abiquo-chef-run << 'EOF'

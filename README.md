@@ -23,4 +23,4 @@ all the agent dependencies. The installation script must be run as root:
 
 ## Copyright
 
-See LICENSE.txt for further details.
+See LICENSE for further details.
