@@ -73,7 +73,12 @@ else
   #
   log "Requesting Chef config from API #{leases[:abiquo_api_url]} OneTime #{leases[:abiquo_api_token]} Accept #{Abiquo::Chef::Config.bootstrap_mediatype}"
   begin
-    xml = RestClient.get leases[:abiquo_api_url], :authorization => "OneTime #{leases[:abiquo_api_token]}", :accept => Abiquo::Chef::Config.bootstrap_mediatype
+    xml = RestClient::Resource.new(
+      leases[:abiquo_api_url],
+      :authorization => "OneTime #{leases[:abiquo_api_token]}",
+      :accept => Abiquo::Chef::Config.bootstrap_mediatype,
+      :verify_ssl => OpenSSL::SSL::VERIFY_NONE
+    ).get
   rescue Exception => e
     log "Error requesting node info from API", :error
     log e.message, :error
