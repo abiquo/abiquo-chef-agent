@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source 'https://rubygems.org'
+source 'http://rubygems.org'
 
 group :development do
   gem 'xml-simple', '~> 1.1.5'
