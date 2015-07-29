@@ -90,10 +90,11 @@ else
   begin
     xml = RestClient::Resource.new(
       leases[:abiquo_api_url],
-      :authorization => "OneTime #{leases[:abiquo_api_token]}",
-      :accept => Abiquo::Chef::Config.bootstrap_mediatype,
       :verify_ssl => OpenSSL::SSL::VERIFY_NONE
-    ).get
+    ).get(
+      :authorization => "OneTime #{leases[:abiquo_api_token]}",
+      :accept => Abiquo::Chef::Config.bootstrap_mediatype
+    )
   rescue Exception => e
     log "Error requesting node info from API", :error
     log e.message, :error
