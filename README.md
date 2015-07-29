@@ -11,6 +11,16 @@ all the agent dependencies. The installation script must be run as root:
     chmod +x install-centos.sh
     ./install-centos.sh
 
+## Building the gem
+
+The build process has been tested on Ruby 1.9.3 and all gem versions have been pinned assuming this. Consider using a Ruby manager or you may have to manually fix some side issues.
+
+    gem install bundler    # Only if the gem is not yet installed
+    bundle install
+    bundle exec rake
+
+This will generate the `abiquo-chef-gem` in the `pkg` folder.
+
 ## Contributing to abiquo-chef-agent
  
 * Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet
