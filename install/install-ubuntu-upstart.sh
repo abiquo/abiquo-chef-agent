@@ -25,6 +25,13 @@ echo "Preparing the system..."
 apt-get update
 apt-get install -y ntp build-essential
 
+echo "Installing Chef..."
+curl -L https://www.opscode.com/chef/install.sh | bash
+
+echo "Installing the Abiquo Chef Agent gem..."
+/opt/chef/embedded/bin/gem install abiquo-chef-agent -v ${AGENT_GEM_VERSION}
+
+ln -s /opt/chef/embedded/bin/abiquo-chef-run /usr/bin
 cat > /etc/init/abiquo-chef-agent.conf << 'EOF'
 # abiquo-chef-agent - Abiquo Chef Agent
 #
@@ -38,14 +45,6 @@ start on (local-filesystems
 stop on runlevel [!2345]
 exec /usr/bin/abiquo-chef-run
 EOF
-
-echo "Installing Chef..."
-curl -L https://www.opscode.com/chef/install.sh | bash
-
-echo "Installing the Abiquo Chef Agent gem..."
-/opt/chef/embedded/bin/gem install abiquo-chef-agent -v ${AGENT_GEM_VERSION}
-
-ln -s /opt/chef/embedded/bin/abiquo-chef-run /usr/bin
 
 echo "Configuring DHCP..."
 cat > /etc/dhcp/dhclient.conf << 'EOF'
