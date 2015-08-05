@@ -19,7 +19,7 @@ require 'time'
 module Abiquo
   module Chef
 
-    VERSION = '2.0.7'
+    VERSION = '2.0.8'
 
     class Config
       def self.chef_config_dir
