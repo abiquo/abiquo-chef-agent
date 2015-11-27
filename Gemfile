@@ -14,10 +14,4 @@
 
 source 'http://rubygems.org'
 
-group :development do
-  gem 'xml-simple', '~> 1.1.5'
-  gem 'jeweler', '~> 2.0.1'
-  gem 'rspec', '~> 3.2.0'
-  gem 'rspec-collection_matchers', '~> 1.1.2'
-  gem 'simplecov', '~> 0.9.1'
-end
+gemspec

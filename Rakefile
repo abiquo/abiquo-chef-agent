@@ -19,22 +19,6 @@ require 'jeweler'
 require 'rdoc/task'
 require 'rspec/core/rake_task'
 
-Jeweler::Tasks.new do |gem|
-  gem.version = Abiquo::Chef::VERSION
-  gem.name = "abiquo-chef-agent"
-  gem.homepage = "http://github.com/abiquo/abiquo-chef-agent"
-  gem.license = "Apache License 2.0"
-  gem.summary = %Q{Abiquo Chef Agent}
-  gem.description = %Q{Abiquo Chef Agent}
-  gem.email = "support@abiquo.com"
-  gem.authors = ["Salvador Girones", "Sergio Rubio", "Serafin Sedano", "Ignasi Barrera"]
-  gem.add_runtime_dependency 'chef'
-  gem.add_runtime_dependency 'rest-client', '~> 1.8.0'
-  gem.add_runtime_dependency 'xml-simple', '~> 1.1.5'
-end
-
-Jeweler::RubygemsDotOrgTasks.new
-
 RSpec::Core::RakeTask.new(:spec)
 
 Rake::RDocTask.new do |rdoc|
