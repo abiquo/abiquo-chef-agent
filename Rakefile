@@ -15,7 +15,6 @@
 require 'rubygems'
 require 'rake'
 require './lib/abiquo-chef-agent.rb'
-require 'jeweler'
 require 'rdoc/task'
 require 'rspec/core/rake_task'
 
