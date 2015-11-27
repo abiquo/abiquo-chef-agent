@@ -13,13 +13,11 @@ all the agent dependencies. The installation script must be run as root:
 
 ## Building the gem
 
-The build process has been tested on Ruby 1.9.3 and all gem versions have been pinned assuming this. Consider using a Ruby manager or you may have to manually fix some side issues.
+The build process has been tested on Ruby 2.1.5 and all gem versions have been pinned assuming this. Consider using a Ruby manager or you may have to manually fix some side issues.
 
-    gem install bundler    # Only if the gem is not yet installed
-    bundle install
-    bundle exec rake
+    gem build abiquo-chef-agent.gemspec
 
-This will generate the `abiquo-chef-gem` in the `pkg` folder.
+This will generate the `abiquo-chef-gem` in the current folder.
 
 ## Contributing to abiquo-chef-agent
  

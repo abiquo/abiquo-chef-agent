@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-AGENT_GEM_VERSION=2.0.9
+AGENT_GEM_VERSION=2.0.10
 
 if [[ ${UID} -ne 0 ]]; then
     echo "${0} must be run as root"
