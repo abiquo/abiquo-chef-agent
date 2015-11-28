@@ -16,14 +16,13 @@
 
 AGENT_GEM_VERSION=2.0.10
 
-if [[ `id -u` -ne 0 ]]; then
-    echo "${0} must be run with sudo"
+if [[ ${UID} -ne 0 ]]; then
+    echo "${0} must be run as root"
     exit 1
 fi
 
 echo "Preparing the system..."
-apt-get update
-apt-get install -y ntp build-essential
+yum --assumeyes install ntp gcc-c++ libstdc++-devel
 
 echo "Installing Chef..."
 curl -L https://www.opscode.com/chef/install.sh | bash
@@ -46,7 +45,7 @@ EOF
 systemctl enable abiquo-chef-agent
 
 echo "Configuring DHCP..."
-cat > /etc/dhcp/dhclient.conf << 'EOF'
+read -r -d '' DHCP << 'EOF'
 option rfc3442-classless-static-routes code 121 = array of unsigned integer 8;
 
 send host-name "<hostname>";
@@ -55,5 +54,12 @@ request subnet-mask, broadcast-address, time-offset, routers,
         netbios-name-servers, netbios-scope, interface-mtu,
         rfc3442-classless-static-routes, ntp-servers, vendor-encapsulated-options;
 EOF
+
+echo "${DHCP}" >/etc/dhcp/dhclient.conf
+
+IFACES=`ip link show | grep ^[0-9]: | grep -iv loopback | cut -d: -f2 | tr -d ' '`
+for IFACE in ${IFACES}; do
+    echo "${DHCP}" >/etc/dhcp/dhclient-${IFACE}.conf
+done
 
 echo "Done!"

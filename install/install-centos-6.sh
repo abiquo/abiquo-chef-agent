@@ -28,7 +28,7 @@ echo "Installing Chef..."
 curl -L https://www.opscode.com/chef/install.sh | bash
 
 echo "Installing the Abiquo Chef Agent gem..."
-/opt/chef/embedded/bin/gem install abiquo-chef-agent -v ${AGENT_CHEF_VERSION}
+/opt/chef/embedded/bin/gem install abiquo-chef-agent -v ${AGENT_GEM_VERSION}
 
 ln -s /opt/chef/embedded/bin/abiquo-chef-run /usr/bin
 cat > /etc/init.d/abiquo-chef-run << 'EOF'

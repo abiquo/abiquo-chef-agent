@@ -109,11 +109,11 @@ module Abiquo
       #
       # Tries to find the right leases file
       #
-      def self.find_leases_file(search_dirs = ['/var/lib/dhcp3', '/var/lib/dhcp', '/var/lib/dhclient'])
+      def self.find_leases_file(search_dirs = ['/var/lib/dhcp3', '/var/lib/dhcp', '/var/lib/dhclient', '/var/lib/NetworkManager'])
         leases = []
         search_dirs.each do |d|
           Dir["#{d}/*"].each do |f|
-            next if f !~ /leases$/
+            next if f !~ /lease(s)?$/
             leases << f
           end
         end
@@ -132,7 +132,7 @@ module Abiquo
       #   :abiquo_api_token => token
       # }
       # 
-      def self.parse_leases_file(search_dirs = ['/var/lib/dhcp3', '/var/lib/dhcp', '/var/lib/dhclient'])
+      def self.parse_leases_file(search_dirs = ['/var/lib/dhcp3', '/var/lib/dhcp', '/var/lib/dhclient', '/var/lib/NetworkManager'])
         files = find_leases_file(search_dirs)
         leases = []
         files.each do |file|
