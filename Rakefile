@@ -25,7 +25,7 @@ end
 
 desc "Release to rubygems"
 task :release => :build do
-  system "gem push abiquo-chef-agent-#{Abiquo::Chef::VERSION}"
+  system "gem push abiquo-chef-agent-#{Abiquo::Chef::VERSION}.gem"
 end
 
 RSpec::Core::RakeTask.new(:spec)

@@ -17,7 +17,14 @@ The build process has been tested on Ruby 2.1.5 and all gem versions have been p
 
     gem build abiquo-chef-agent.gemspec
 
-This will generate the `abiquo-chef-gem` in the current folder.
+This will generate the `abiquo-chef-gem` in the current folder. Or alternatively, using ```rake```:
+
+    rake
+
+Will run tests and build the gem. For a list of tasks run:
+
+    rake -T
+
 
 ## Contributing to abiquo-chef-agent
  
