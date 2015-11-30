@@ -18,9 +18,6 @@ require 'time'
 
 module Abiquo
   module Chef
-
-    VERSION = '2.0.10'
-
     class Config
       def self.chef_config_dir
         '/etc/chef'

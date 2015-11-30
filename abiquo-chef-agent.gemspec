@@ -1,6 +1,6 @@
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'abiquo-chef-agent.rb'
+require 'version.rb'
 
 Gem::Specification.new do |gem|
   gem.version         = Abiquo::Chef::VERSION

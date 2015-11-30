@@ -1,0 +1,16 @@
+lease {
+  interface "ens3";
+  fixed-address 10.60.13.10;
+  option subnet-mask 255.255.255.0;
+  option routers 10.60.13.1;
+  option dhcp-lease-time 60000;
+  option dhcp-message-type 5;
+  option domain-name-servers 10.60.13.1,8.8.8.8;
+  option dhcp-server-identifier 10.60.20.30;
+  option broadcast-address 10.60.13.255;
+  option vendor-encapsulated-options "http://10.60.20.30:8009/api/cloud/virtualdatacenters/46/virtualappliances/4717/virtualmachines/11851/config/bootstrap@@6Z9u+gUh95DDwTmQbbYKZA==";
+  option domain-name "bcn.abiquo.com.";
+  renew 1 2015/11/30 17:28:04;
+  rebind 2 2015/12/01 00:22:59;
+  expire 2 2015/12/01 02:27:59;
+}

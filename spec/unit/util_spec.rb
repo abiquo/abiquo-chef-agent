@@ -27,7 +27,7 @@ describe Util do
     end
 
     it 'should return latest lease' do
-      expect(@leases[:renew]).to eql(Time.parse('2012-11-18 05:48:45 +0100'))
+      expect(@leases[:renew]).to eql(Time.parse('2015/11/30 17:28:04 +0100'))
     end
 
     it 'should  have a valid token' do
@@ -38,7 +38,7 @@ describe Util do
 
   describe 'find_leases_file' do
     it 'should find a lease file' do
-      expect(Util.find_leases_file([data_dir + "dhclient/"])).to have(1).item
+      expect(Util.find_leases_file([data_dir + "dhclient/"])).to have(2).item
     end
 
     it 'should return an empty list' do

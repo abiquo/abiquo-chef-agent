@@ -18,6 +18,14 @@ require './lib/abiquo-chef-agent.rb'
 require 'rdoc/task'
 require 'rspec/core/rake_task'
 
+task :build do  
+  system "gem build abiquo-chef-agent.gemspec"
+end
+
+task :release => :build do
+  system "gem push abiquo-chef-agent-#{Abiquo::Chef::VERSION}"
+end
+
 RSpec::Core::RakeTask.new(:spec)
 
 Rake::RDocTask.new do |rdoc|
