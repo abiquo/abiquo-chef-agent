@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-AGENT_GEM_VERSION=2.0.10
+AGENT_GEM_VERSION=2.0.11
 
 if [[ `id -u` -ne 0 ]]; then
     echo "${0} must be run with sudo"

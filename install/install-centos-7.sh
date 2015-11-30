@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-AGENT_GEM_VERSION=2.0.10
+AGENT_GEM_VERSION=2.0.11
 
 if [[ ${UID} -ne 0 ]]; then
     echo "${0} must be run as root"
@@ -34,12 +34,13 @@ ln -s /opt/chef/embedded/bin/abiquo-chef-run /usr/bin
 cat > /lib/systemd/system/abiquo-chef-agent.service << 'EOF'
 [Unit]
 Description=Abiquo Chef Agent
+After=network.target
 
 [Service]
 ExecStart=/usr/bin/abiquo-chef-run
 
 [Install]
-WantedBy=network-online.target
+WantedBy=multi-user.target
 EOF
 
 systemctl enable abiquo-chef-agent
