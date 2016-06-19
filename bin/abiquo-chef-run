@@ -169,7 +169,7 @@ else
   log output, :info
 
   net_config_file = '/etc/sysconfig/network'
-  if File.exists? net_config_file
+  if File.file? net_config_file
     log "Configuring /etc/sysconfig/network with the new hostname"
     data = File.read net_config_file
     File.open net_config_file, 'w' do |f|
