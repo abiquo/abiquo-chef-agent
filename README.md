@@ -3,6 +3,9 @@ abiquo-chef-agent
 
 A simple boot time execution daemon that allow to execute the Chef configuration of an Abiquo virtual machine.
 
+***The Abiquo Chef agent is required to enable Chef bootstrap features for private cloud in Abiquo < 4.0.2.
+Starting from Abiquo 4.0.2 the Chef support is levegared with cloud-init and this agent is no longer required.***
+
 ## Installing
 
 Installation script currently targets only CentOS and Ubuntu operating systems. The script will install Chef and
